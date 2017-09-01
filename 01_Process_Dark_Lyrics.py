@@ -47,9 +47,9 @@ def main():
                 if not os.path.exists(OUTPUT_PATH + band):
                     os.makedirs(OUTPUT_PATH + band)
 
-                with open(OUTPUT_PATH + band + '/' + band + '_' + f[
-                                                                  :-5] + '.txt',
-                          'w+') as text_file:
+                with open(OUTPUT_PATH + band + '/' + band
+                                  + '_' + f[:-5] + '.txt', 'w+') as text_file:
+                    print(lyric_path)
                     text_file.write(process(lyric_path))
 
 
