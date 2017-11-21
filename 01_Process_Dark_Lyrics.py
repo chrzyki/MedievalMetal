@@ -32,8 +32,7 @@ def process(file_path):
             ''.join(ch for ch in st if ch not in string.punctuation) for st in
             tokens])
 
-        filtered = [w for w in ' '.join(token_string).split(' ') if
-                    not w in STOP_WORDS]
+        filtered = [w for w in ' '.join(token_string).split(' ') if w not in STOP_WORDS]
         return ' '.join(filtered)
 
 
@@ -47,8 +46,8 @@ def main():
                 if not os.path.exists(OUTPUT_PATH + band):
                     os.makedirs(OUTPUT_PATH + band)
 
-                with open(OUTPUT_PATH + band + '/' + band
-                                  + '_' + f[:-5] + '.txt', 'w+') as text_file:
+                with open(OUTPUT_PATH + band + '/' + band + '_' + f[:-5] + '.txt', 'w+')\
+                        as text_file:
                     print(lyric_path)
                     text_file.write(process(lyric_path))
 
@@ -56,4 +55,3 @@ def main():
 if __name__ == "__main__":
     main()
     STOP_WORDS_FILE.close()
-

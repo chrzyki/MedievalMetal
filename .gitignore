@@ -1,3 +1,5 @@
 00_OED_API.py
 DarkLyrics/
 DarkLyricsProcessed/
+venv/
+PickledGrams/
