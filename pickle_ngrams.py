@@ -1,24 +1,67 @@
 from nltk import ngrams
 from nltk.tokenize import word_tokenize
+import os
 
 import pickle
+import gzip
 
-with open('DarkLyricsProcessed/inflames/inflames_thejesterrace.txt', 'r') as f:
-    FLAMES = f.readline()
 
-# for tri_char in ngrams([c for c in FLAMES], 3):
-#     print(tri_char)
+class BandGrams:
+    def make_char_grams(self):
+        aggregated_char_grams = {}
 
-pickle.dump(list(ngrams([c for c in FLAMES], 3)), open('PickledGrams/JesterRaceChar', 'wb'))
-pickle.dump(list(ngrams(word_tokenize(FLAMES), 3)), open('PickledGrams/JesterRaceWord', 'wb'))
+        for ngram_size in range(1, self.gram_size + 1):
+            album_char_grams = {}
 
-# FLAMES_GRAMS = ngrams(flames, 3)
-#
-# for gram in FLAMES_GRAMS:
-#     print(gram)
-#
-# token = word_tokenize(flames)
-#
-#
-# for gram in ngrams(token, 3):
-#     print(gram)
+            for album, lyrics in self.band_lyrics.items():
+                album_char_grams[album] = list(ngrams([c for c in lyrics], ngram_size))
+                aggregated_char_grams[ngram_size] = album_char_grams
+
+        return aggregated_char_grams
+
+    def make_word_grams(self):
+        aggregated_word_grams = {}
+
+        for ngram_size in range(1, self.gram_size + 1):
+            album_word_grams = {}
+
+            for album, lyrics in self.band_lyrics.items():
+                album_word_grams[album] = list(ngrams(word_tokenize(lyrics), ngram_size))
+                aggregated_word_grams[ngram_size] = album_word_grams
+
+        return aggregated_word_grams
+
+    def __init__(self, band_name: str, album_dict, char_grams: bool=True,
+                 word_grams: bool=True, gram_size: int=3):
+        self.band_name = band_name
+        self.band_lyrics = album_dict
+        self.gram_size = gram_size
+
+        if char_grams:
+            self.char_grams = self.make_char_grams()
+
+        if word_grams:
+            self.word_grams = self.make_word_grams()
+
+
+def create_band_grams():
+    for subdir, dirs, files in os.walk('DarkLyricsProcessed/'):
+        _, band_name = subdir.split('/')
+
+        if not band_name:
+            continue
+
+        band_lyrics = {}
+
+        for f in files:
+            lyric_path = subdir + os.sep + f
+            album_title = lyric_path.split('_')[1].split('.')[0]
+
+            with open(lyric_path, 'r') as lyrics_file:
+                band_lyrics[album_title] = lyrics_file.readline()
+
+        pickle.dump(BandGrams(band_name, band_lyrics, gram_size=10),
+                    gzip.open('PickledGrams/' + band_name + '.gz', 'wb'))
+
+
+create_band_grams()
