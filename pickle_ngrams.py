@@ -6,7 +6,7 @@ import pickle
 import gzip
 
 
-class BandGrams:
+class BandGram:
     def make_char_grams(self):
         aggregated_char_grams = {}
 
@@ -45,6 +45,8 @@ class BandGrams:
 
 
 def create_band_grams():
+    i = 0
+
     for subdir, dirs, files in os.walk('DarkLyricsProcessed/'):
         _, band_name = subdir.split('/')
 
@@ -60,8 +62,10 @@ def create_band_grams():
             with open(lyric_path, 'r') as lyrics_file:
                 band_lyrics[album_title] = lyrics_file.readline()
 
-        pickle.dump(BandGrams(band_name, band_lyrics, gram_size=10),
+        i += 1
+        pickle.dump(BandGram(band_name, band_lyrics, gram_size=10),
                     gzip.open('PickledGrams/' + band_name + '.gz', 'wb'))
+        print(str(i) + ": " + band_name)
 
-
-create_band_grams()
+if __name__ == "__main__":
+    create_band_grams()

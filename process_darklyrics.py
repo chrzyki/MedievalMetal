@@ -8,7 +8,7 @@ from nltk.tokenize import wordpunct_tokenize
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_PATH = SCRIPT_PATH + '/DarkLyricsProcessed/'
-STOP_WORDS_FILE = open('00_Stopwords.txt', 'r')
+STOP_WORDS_FILE = open('stopwords.txt', 'r')
 STOP_WORDS = STOP_WORDS_FILE.read().split()
 
 
