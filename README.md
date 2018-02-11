@@ -7,4 +7,4 @@ Settings:
 
 Paper settings:
 
-- char, range(4,4)
+- char, range(4,4) (for all plots, dendrogram, MDS, etc.)
