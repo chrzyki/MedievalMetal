@@ -8,3 +8,7 @@ Settings:
 Paper settings:
 
 - char, range(4,4) (for all plots, dendrogram, MDS, etc.)
+
+Comparison:
+
+- word, range(1,3)
